@@ -17,13 +17,13 @@ The MPC Model that I used was taken directly from the quiz. The general flow of 
       * I used the same cost function as the quiz did. I had the ability to punish CTE, Error in Psi, Velocity Delta, Steering Use, Accelerator Use, Gap between steering angles, Gap between accelerator values. After much trial and error, which was probably the worst night ever, I decided to give the following weights to the costs:
 
       
-       ' CTE:     1.5 (Needed it to be a little more important than the velocity costs)
-       ' EPSI:    2.0 (Seemed like at slower speeds, the position of the front end matter a little bit more than the CTE)
-       ' VelDiff: 1.0 (If I was building a racecar this would have mattered more, but just keeping the car on the road at about 30 mph, this wasn't a concern)
-       ' Steer Actuation:     25 (Helped limit steer angle, smooth)
-       ' Velocity Actuation:   5 (Probably could have been zero, but ratios of Cost is important in MPC)
-       ' Steer Gap:          500 (Latency and desire for smoothness drove this high of a number)
-       ' Velocity Gap:         1 (Wasn't concerned about velocity changes)
+        * CTE:     1.5 (Needed it to be a little more important than the velocity costs)
+        * EPSI:    2.0 (Seemed like at slower speeds, the position of the front end matter a little bit more than the CTE)
+        * VelDiff: 1.0 (If I was building a racecar this would have mattered more, but just keeping the car on the road at about 30 mph, this wasn't a concern)
+        * Steer Actuation:     25 (Helped limit steer angle, smooth)
+        * Velocity Actuation:   5 (Probably could have been zero, but ratios of Cost is important in MPC)
+        * Steer Gap:          500 (Latency and desire for smoothness drove this high of a number)
+        * Velocity Gap:         1 (Wasn't concerned about velocity changes)
       
 5. The Flow
      1. Get the current vehicle map position and waypoints
@@ -31,7 +31,7 @@ The MPC Model that I used was taken directly from the quiz. The general flow of 
      3. Find the best third order polynomial to fit the waypoints
      4. Calculate the CTE and Error Psi
      5. Give the Solver the state and polynomial coefficents
-     6. The solver takes the State, Model, Constraints, and Cost, crunches the numbers and outputs the best actuations for the steering angle and acclerator.
+     6. The solver takes the State, Model, Constraints, and Cost Function, crunches the numbers and outputs the best actuations for the steering angle and acclerator.
      7. Repeat
 6. Latency
      * In my first attempt to deal with latency, I set dt to 0.1 seconds. This caused an endles mountain of issues for me. I couldn't set N to a low enough value to help with my slow speed. Therefore, to handle latency, I gave a really large cost to the steering gap and steer actuation. I could have done the same if velocity was a concern of mine. I figured with the higher costs, we wouldn't be trying to actuate unless it was truly necessary.
