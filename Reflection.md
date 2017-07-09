@@ -1,14 +1,15 @@
-**PID Controller Reflection** 
+**MPC Controller Reflection** 
 
-This is my reflection of the effect each of the PID components had in my implementation and how the final hyperparameters were chosen for Udacity's PID Controller Project.
+This is my reflection of the effect each of the MPC Controller parts work and how it went. I aimed for a speed of roughly 30 mph, to match what I did in the PID project.
 
 ---
 
-**How it went**
+**The Model, Timestep, Polynomial, and Latency**
 
-My original plan was to use 'Twiddle' to automatically find all of my PID values. After implementing 'Twiddle' in the quiz, I thought it was one of the most amazing, easy-to-use tools that I have ever seen. Gone would be the days of PID guess and check. After about two days of trying to tune 'Twiddle', I gave up. This can be seen on lines 67-200 or the main.cpp file. I believe how I implemented or maybe my understanding of it is incorrect. My understandin of 'Twiddle' is the following:
- 1. Initialize the parameters
- 2. Initialize potential changes to the parameters
+The MPC Model that I used was taken directly from the quiz. The general flow of the model is:
+ 1. Define the duration of the trajectory (T), which is dt * N. 
+    * The 'T' is how long the model looks into the future. I choose a short future, 0.36 seconds, because my car was moving so slow. Anything longer I discovered caused major proboems. If 'T' is too great, the cost is calculating stuff too far out in the future and is messing with the present. My final parameters were dt=.04s and N = 9. From lecture it stated to stay under two seconds, but that must be for a rapidly moving car without curves.
+ 2. Define the state. 
  3. Calculate some error
  4. Adjust a parameter with the potential change
  5. Calculate some error
