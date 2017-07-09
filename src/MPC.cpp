@@ -106,11 +106,23 @@ public:
 			AD<double> v0 = vars[v_start + t - 1];
 			AD<double> cte0 = vars[cte_start + t - 1];
 			AD<double> epsi0 = vars[epsi_start + t - 1];
+			AD<double> delta0;
+			AD<double> a0;
 
 			// Only consider the actuation at time t.
-			AD<double> delta0 = vars[delta_start + t - 1];
-			AD<double> a0 = vars[a_start + t - 1];
-
+			//Use previous time's predictions after first pass - added different from quiz
+			if (t <= 1) //first pass
+			{
+				delta0 = vars[delta_start + t - 1];
+				a0 = vars[a_start + t - 1];
+			}
+			else //to account for latency
+			{
+				delta0 = vars[delta_start + t - 2];
+				a0 = vars[a_start + t - 2];
+			}
+			
+			
 			AD<double> f0 = coeffs[0] + coeffs[1] * x0;
 			AD<double> psides0 = CppAD::atan(coeffs[1]);
 
