@@ -34,5 +34,5 @@ The MPC Model that I used was taken directly from the quiz. The general flow of 
      6. The solver takes the State, Model, Constraints, and Cost Function, crunches the numbers and outputs the best actuations for the steering angle and acclerator.
      7. Repeat
 6. Latency
-     * In my first attempt to deal with latency, I set dt to 0.1 seconds. This caused an endles mountain of issues for me. I couldn't set N to a low enough value to help with my slow speed. Therefore, to handle latency, I gave a really large cost to the steering gap and steer actuation. I could have done the same if velocity was a concern of mine. I figured with the higher costs, we wouldn't be trying to actuate unless it was truly necessary.
+     * In my first attempt to deal with latency, I set dt to 0.1 seconds. This caused an endles mountain of issues for me. I couldn't set N to a low enough value to help with my slow speed. Therefore, to handle latency, I gave a really large cost to the steering gap and steer actuation. I could have done the same if velocity was a concern of mine. I figured with the higher costs, we wouldn't be trying to actuate unless it was truly necessary. Also, when considering the actuation predictions, I use the previous time step after the first pass to set delta0 and a0.
       
