@@ -17,13 +17,13 @@ The MPC Model that I used was taken directly from the quiz. The general flow of 
       * I used the same cost function as the quiz did. I had the ability to punish CTE, Error in Psi, Velocity Delta, Steering Use, Accelerator Use, Gap between steering angles, Gap between accelerator values. After much trial and error, which was probably the worst night ever, I decided to give the following weights to the costs:
 
       
-      # CTE:     1.5 (Needed it to be a little more important than the velocity costs)
-      # EPSI:    2.0 (Seemed like at slower speeds, the position of the front end matter a little bit more than the CTE)
-      # VelDiff: 1.0 (If I was building a racecar this would have mattered more, but just keeping the car on the road at about 30 mph, this wasn't a concern)
-      # Steer Actuation:     25 (Helped limit steer angle, smooth)
-      # Velocity Actuation:   5 (Probably could have been zero, but ratios of Cost is important in MPC)
-      # Steer Gap:          500 (Latency and desire for smoothness drove this high of a number)
-      # Velocity Gap:         1 (Wasn't concerned about velocity changes)
+       ' CTE:     1.5 (Needed it to be a little more important than the velocity costs)
+       ' EPSI:    2.0 (Seemed like at slower speeds, the position of the front end matter a little bit more than the CTE)
+       ' VelDiff: 1.0 (If I was building a racecar this would have mattered more, but just keeping the car on the road at about 30 mph, this wasn't a concern)
+       ' Steer Actuation:     25 (Helped limit steer angle, smooth)
+       ' Velocity Actuation:   5 (Probably could have been zero, but ratios of Cost is important in MPC)
+       ' Steer Gap:          500 (Latency and desire for smoothness drove this high of a number)
+       ' Velocity Gap:         1 (Wasn't concerned about velocity changes)
       
 5. The Flow
      1. Get the current vehicle map position and waypoints
