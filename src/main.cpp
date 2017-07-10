@@ -17,6 +17,7 @@ using namespace std;
 //Mine
 extern size_t N;
 extern double dt;
+double steer_valuelatency = 0; //for 100ms ahead
 
 // For converting back and forth between radians and degrees.
 constexpr double pi() { return M_PI; }
@@ -161,6 +162,20 @@ int main() {
 
 					/**********************************Step 3. Setup State Matrix***********************************/
 					Eigen::VectorXd state(6);
+					
+
+					/******************Thank you Udacity Reviewer for the Help with the Latency**********************/
+					// predicting 100 ms in the future.
+					px = v * cos(0) * 0.1;
+					py = v * sin(0) * 0.1;
+					psi = (-v / 2.67) * steer_valuelatency * 0.1;
+					v = v; //assume velocty is not changing
+					cte = cte + v * sin(epsi) * 0.1;
+					epsi = epsi - (v / 2.67) * steer_valuelatency * 0.1;
+
+					//cout << "PSI: " << epsi << endl;
+					//cout << "ePSI: " << psi << endl;
+
 					state << px, py, psi, v, cte, epsi;
 
 					/*std::vector<double> x_vals = { state[0] };
@@ -176,8 +191,11 @@ int main() {
 					auto vars = mpc.Solve(state, coeffs);
 
 					/**********************************Step 5. Break out vars***********************************/
+					steer_valuelatency = vars[0] * -1;
 					double steer_value = (vars[0] / deg2rad(25)) * -1; //delta to use segmentation fault (core dumped)...doing something wrong here
 					double throttle_value = vars[1]; //acceleration to use
+
+					
 
 					json msgJson;
 					// NOTE: Remember to divide by deg2rad(25) before you send the steering value back.
