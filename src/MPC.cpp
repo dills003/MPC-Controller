@@ -57,8 +57,8 @@ public:
 
 		// The part of the cost based on the reference state.
 		for (size_t t = 0; t < N; t++) {
-			fg[0] += 1.5 * CppAD::pow(vars[cte_start + t], 2);
-			fg[0] += 2.0 * CppAD::pow(vars[epsi_start + t], 2); 
+			fg[0] += 2 * CppAD::pow(vars[cte_start + t], 2);
+			fg[0] += 2 * CppAD::pow(vars[epsi_start + t], 2); 
 			fg[0] += CppAD::pow(vars[v_start + t] - ref_v, 2); //not really concerned with
 		}
 
@@ -89,7 +89,7 @@ public:
 		fg[1 + cte_start] = vars[cte_start];
 		fg[1 + epsi_start] = vars[epsi_start];
 
-		// The rest of the constraints
+		// The rest of the constraints /
 		for (size_t t = 1; t < N; t++) {
 			// The state at time t+1 .
 			AD<double> x1 = vars[x_start + t];
@@ -106,23 +106,11 @@ public:
 			AD<double> v0 = vars[v_start + t - 1];
 			AD<double> cte0 = vars[cte_start + t - 1];
 			AD<double> epsi0 = vars[epsi_start + t - 1];
-			AD<double> delta0;
-			AD<double> a0;
+			AD<double> delta0 = vars[delta_start + t - 1];
+			AD<double> a0 = vars[a_start + t - 1];
 
-			// Only consider the actuation at time t.
-			//Use previous time's predictions after first pass - added different from quiz
-			if (t <= 1) //first pass
-			{
-				delta0 = vars[delta_start + t - 1];
-				a0 = vars[a_start + t - 1];
-			}
-			else //to account for latency
-			{
-				delta0 = vars[delta_start + t - 2];
-				a0 = vars[a_start + t - 2];
-			}
-			
-			
+			//Use previous time's predictions - added different from quiz
+
 			AD<double> f0 = coeffs[0] + coeffs[1] * x0;
 			AD<double> psides0 = CppAD::atan(coeffs[1]);
 
